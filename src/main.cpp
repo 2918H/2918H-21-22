@@ -12,8 +12,8 @@
  * - [Must] all be in design notebook
 */
 
-int drive_mode = 1; //goes between 0, 1, and 2
-int power_multiplier = 12000; //overvolt. is 16000, so 12000 just for now
+int drive_mode = 0; //goes between 0, 1, and 2
+int power_multiplier = 1000; //overvolt. is 16000, so 12000 just for now
 int auton_type = 0; //0 is blue left, 1 is blue right, 3 is red left, 4 is red right 
 
 /* --- motor telemetry ideas ---
@@ -35,7 +35,7 @@ int auton_type = 0; //0 is blue left, 1 is blue right, 3 is red left, 4 is red r
  *  - Seperate tasks for drive (4 mtrs) and others (arms, hands, etc) (4 mtrs)
  *  - File manager task <-> read / write logs from motors
  *  - 
- * MAKE SURE NO STACK OVERFLOWS OR SYSTEM TASK`FAILURES
+ * MAKE SURE NO STACK OVERFLOWS OR SYSTEM TASK FAILURES
 */
 
 Controller master(E_CONTROLLER_MASTER);
@@ -57,8 +57,22 @@ void on_center_button() { //for default lcd manager (ideally not use)
 	}
 }
 
+bool logging = false;
+
+void sd_logging(void* param) {
+	if (!usd::is_installed()) return;
+	FILE* usd_file_write = fopen("/usd/test.log", "w");
+	while(logging){
+		//output the log to a file
+		fputs("loggggggggggg...", usd_file_write);
+		delay(100);
+	}
+	fclose(usd_file_write);
+}
+
 #ifdef LCD_NEW
 lv_obj_t * tabview;
+lv_obj_t * details_label;
 lv_obj_t * drive_label;
 lv_obj_t * debug_label;
 lv_obj_t * autonbutton1;
@@ -77,14 +91,30 @@ static lv_res_t btn_event_handler(lv_obj_t * btn) {
 
 void gui_manager(void * param){
     tabview = lv_tabview_create(lv_scr_act(), NULL);
+    lv_obj_t *details_tab = lv_tabview_add_tab(tabview, "DETAILS");
     lv_obj_t *auton_tab = lv_tabview_add_tab(tabview, "AUTON");
     lv_obj_t *drive_tab = lv_tabview_add_tab(tabview, "DRIVE");
     lv_obj_t *debug_tab = lv_tabview_add_tab(tabview, "DEBUG");
     
+    details_label = lv_label_create(details_tab, NULL);
     autonbutton1 = lv_btn_create(auton_tab, NULL);
     drive_label = lv_label_create(drive_tab, NULL);
     debug_label = lv_label_create(debug_tab, NULL);
     
+    lv_label_set_text(details_label, " --- Drive One --- \n \
+									Left Joystick -> straightwards and strafing\n \
+									Right Joystick -> turning\n\n \
+									 --- Drive Two --- \n \
+									Effectively tank controls, but x axis controls strafing\n\n \
+									 --- Drive Three --- \n \
+									Left Joystick -> straightwards and turning\n\
+									Right Joystick -> strafing\n\n \
+									 --- Others --- \n \
+									Up -> Shift up a drive mode \n \
+									Down -> Shift down a drive mode \n \
+									A -> Activates Logging\n \
+									B -> Deactivates Logging\n \
+									");
     //lv_obj_set_event_cb(autonbutton1, auton_event_handler);
     autonbutton1_label = lv_label_create(autonbutton1, NULL);
     lv_label_set_text(autonbutton1_label, "Auton");
@@ -139,6 +169,7 @@ void initialize() {
 #ifdef LCD_NEW
     Task gui(gui_manager);
 #endif
+	Task sd_log(sd_logging);
 }
 
 void disabled() {}
@@ -146,6 +177,23 @@ void disabled() {}
 void competition_initialize() {}
 
 void autonomous() {}
+
+void drive_one(){
+    float axis_4 = master.get_analog(ANALOG_LEFT_X); //left side
+    float axis_3 = master.get_analog(ANALOG_LEFT_Y); //left up
+	float axis_2 = master.get_analog(ANALOG_RIGHT_Y); //right up
+    float axis_1 = master.get_analog(ANALOG_RIGHT_X); //right side
+    
+    float f_lf = (axis_3 + (axis_4) + axis_1)/(3*127)*power_multiplier;
+    float f_lb = (axis_3 + (-axis_4) + axis_1)/(3*127)*power_multiplier;
+    float f_rf = (axis_3 + (-axis_4) - axis_1)/(3*127)*power_multiplier;
+    float f_rb = (axis_3 + (axis_4) - axis_1)/(3*127)*power_multiplier;
+    
+    lf_mtr.move(f_lf);
+    lb_mtr.move(f_lb);
+    rf_mtr.move(f_rf);
+    rb_mtr.move(f_rb);
+}
 
 void drive_two(){
     float axis_4 = master.get_analog(ANALOG_LEFT_X); //left side
@@ -164,23 +212,6 @@ void drive_two(){
     rb_mtr.move(f_rb);
 }
 
-void drive_one(){
-    float axis_4 = master.get_analog(ANALOG_LEFT_X); //left side
-    float axis_3 = master.get_analog(ANALOG_LEFT_Y); //left up
-	float axis_2 = master.get_analog(ANALOG_RIGHT_Y); //right up
-    float axis_1 = master.get_analog(ANALOG_RIGHT_X); //right side
-    
-    float f_lf = (axis_3 + (axis_4) + axis_1)/(3*127)*power_multiplier;
-    float f_lb = (axis_3 + (-axis_4) + axis_1)/(3*127)*power_multiplier;
-    float f_rf = (axis_3 + (-axis_4) - axis_1)/(3*127)*power_multiplier;
-    float f_rb = (axis_3 + (axis_4) - axis_1)/(3*127)*power_multiplier;
-    
-    lf_mtr.move(f_lf);
-    lb_mtr.move(f_lb);
-    rf_mtr.move(f_rf);
-    rb_mtr.move(f_rb);
-}
-    
 void drive_three(){
     float axis_4 = master.get_analog(ANALOG_LEFT_X); //left side
     float axis_3 = master.get_analog(ANALOG_LEFT_Y); //left up
@@ -198,7 +229,6 @@ void drive_three(){
     rb_mtr.move(f_rb);
 }
 
-
 void opcontrol() {
 	while (true) {
 #ifdef LCD_OLD
@@ -207,8 +237,11 @@ void opcontrol() {
 		                 (lcd::read_buttons() & LCD_OLD_BTN_RIGHT) >> 0);
         lcd::print(4, std::to_string(drive_mode).c_str());
 #endif        
-        if (master.get_digital(E_CONTROLLER_DIGITAL_UP)) drive_mode++;
-        if (master.get_digital(E_CONTROLLER_DIGITAL_DOWN)) drive_mode--;
+        if (master.get_digital(E_CONTROLLER_DIGITAL_UP)) { drive_mode++; delay(75); }
+        if (master.get_digital(E_CONTROLLER_DIGITAL_DOWN)) { drive_mode--; delay(75); }
+        
+        if(master.get_digital(E_CONTROLLER_DIGITAL_A)) { logging = true; }
+        if(master.get_digital(E_CONTROLLER_DIGITAL_B)) { logging = false; }
         
         if (drive_mode == 0){
             drive_one();

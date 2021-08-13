@@ -1,4 +1,4 @@
- #include "main.h"
+#include "main.h"
 //#define LCD_OLD //define if not using default lcd manager
 #define LCD_NEW
 
@@ -61,13 +61,13 @@ bool logging = false;
 
 void sd_logging(void* param) {
 	if (!usd::is_installed()) return;
-	FILE* usd_file_write = fopen("/usd/test.log", "w");
 	while(logging){
-		//output the log to a file
+        FILE* usd_file_write = fopen("/usd/test.log", "w");
+        //output the log to a file
 		fputs("loggggggggggg...", usd_file_write);
 		delay(100);
+        fclose(usd_file_write);
 	}
-	fclose(usd_file_write);
 }
 
 #ifdef LCD_NEW
@@ -184,8 +184,8 @@ void drive_one(){
 	float axis_2 = master.get_analog(ANALOG_RIGHT_Y); //right up
     float axis_1 = master.get_analog(ANALOG_RIGHT_X); //right side
     
-    float f_lf = (axis_3 + (axis_4) + axis_1)/(3*127)*power_multiplier;
-    float f_lb = (axis_3 + (-axis_4) + axis_1)/(3*127)*power_multiplier;
+    float f_lf = (axis_3 + (-axis_4) + axis_1)/(3*127)*power_multiplier;
+    float f_lb = (axis_3 + (axis_4) + axis_1)/(3*127)*power_multiplier;
     float f_rf = (axis_3 + (-axis_4) - axis_1)/(3*127)*power_multiplier;
     float f_rb = (axis_3 + (axis_4) - axis_1)/(3*127)*power_multiplier;
     

@@ -4,8 +4,8 @@
 
 /* === TODO ===
  * /DONE/- [Driving] multiple joystick turning / strafing 
- * - [Debugging] graphic display using custom manager
- * - [Nice to have] RTOS async functionality
+ * /DONE/ - [Debugging] graphic display using custom manager
+ * /DONE/ - [Nice to have] RTOS async functionality
  * - [Nice to have] comment all code (incl. logic behind driving math)
  * 
  * 
@@ -57,17 +57,23 @@ void on_center_button() { //for default lcd manager (ideally not use)
 	}
 }
 
-bool logging = false;
+bool logging = true;
 
-void sd_logging(void* param) {
-	if (!usd::is_installed()) return;
+void sd_logging(void* param) { //what this does is write multiple lines into a file (test.log)
+	if (!usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.
+    FILE* usd_file_write = fopen("/usd/test.log", "w");
+    int logint = 0;
 	while(logging){
-        FILE* usd_file_write = fopen("/usd/test.log", "w");
         //output the log to a file
-		fputs("loggggggggggg...", usd_file_write);
+        /*std::string log_text = "{[TIME]" + std::to_string(millis()) + "}<\n" + \
+                                "{[LBVOL]" + std::to_string(lb_mtr.get_voltage()) + "}\n" + \
+                                ">\n\n";*/
+        std::string log_text = std::to_string(logint) + ": {\n\t\"time\": " + std::to_string(millis()) + ", \n\t\"lf\": {\n\t\t\"vol\": " + std::to_string(lf_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(lf_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(lf_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(lf_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(lf_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(lf_mtr.is_stopped()) + "\n\t},\n\t\"lb\": {\n\t\t\"vol\": " + std::to_string(lb_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(lb_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(lb_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(lb_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(lb_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(lb_mtr.is_stopped()) + "\n\t},\n\t\"rf\": {\n\t\t\"vol\": " + std::to_string(rf_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(rf_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(rf_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(rf_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(rf_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(rf_mtr.is_stopped()) + "\n\t},\n\t\"rb\": {\n\t\t\"vol\": " + std::to_string(rb_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(rb_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(rb_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(rb_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(rb_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(rb_mtr.is_stopped()) + "\n\t},\n},\n";
+		fputs(log_text.c_str(), usd_file_write);
+        logint++;
 		delay(100);
-        fclose(usd_file_write);
 	}
+	fclose(usd_file_write);
 }
 
 #ifdef LCD_NEW

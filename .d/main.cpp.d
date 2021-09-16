@@ -72,7 +72,8 @@ bin/main.cpp.o: src/main.cpp include/main.h include/api.h \
  include/pros/optical.hpp include/pros/optical.h \
  include/pros/rotation.hpp include/pros/rotation.h include/pros/rtos.hpp \
  include/pros/rtos.h include/pros/vision.hpp include/pros/vision.h \
- include/pros/apix.h include/pros/serial.h include/pros/serial.hpp \
+ include/dev.h include/chasis-drive.h include/gui.h include/pros/apix.h \
+ include/pros/serial.h include/pros/serial.hpp include/filemanagment.h \
  include/json.hpp
 include/main.h:
 include/api.h:
@@ -215,7 +216,11 @@ include/pros/rtos.hpp:
 include/pros/rtos.h:
 include/pros/vision.hpp:
 include/pros/vision.h:
+include/dev.h:
+include/chasis-drive.h:
+include/gui.h:
 include/pros/apix.h:
 include/pros/serial.h:
 include/pros/serial.hpp:
+include/filemanagment.h:
 include/json.hpp:

@@ -1,8 +1,8 @@
 bin/filemanagment.cpp.o: src/filemanagment.cpp include/filemanagment.h \
  include/api.h include/pros/adi.h include/pros/colors.h \
  include/pros/distance.h include/pros/ext_adi.h include/pros/adi.h \
- include/pros/adi.h include/pros/imu.h include/pros/llemu.h \
- include/display/lvgl.h include/display/lv_version.h \
+ include/pros/adi.h include/pros/gps.h include/pros/imu.h \
+ include/pros/llemu.h include/display/lvgl.h include/display/lv_version.h \
  include/display/lv_misc/lv_log.h include/display/lv_conf.h \
  include/display/lv_conf_checker.h include/display/lv_misc/lv_task.h \
  include/display/lv_misc/lv_mem.h include/display/lv_misc/lv_log.h \
@@ -65,14 +65,16 @@ bin/filemanagment.cpp.o: src/filemanagment.cpp include/filemanagment.h \
  include/display/lv_objx/lv_spinbox.h include/display/lv_objx/lv_ta.h \
  include/pros/misc.h include/pros/motors.h include/pros/optical.h \
  include/api.h include/pros/rtos.h include/pros/rotation.h \
- include/pros/vision.h include/pros/adi.hpp include/pros/distance.hpp \
- include/pros/distance.h include/pros/imu.hpp include/pros/imu.h \
- include/pros/llemu.hpp include/pros/llemu.h include/pros/misc.hpp \
- include/pros/misc.h include/pros/motors.hpp include/pros/motors.h \
- include/pros/optical.hpp include/pros/optical.h \
+ include/pros/screen.h include/pros/colors.h include/pros/vision.h \
+ include/pros/adi.hpp include/pros/distance.hpp include/pros/distance.h \
+ include/pros/gps.hpp include/pros/gps.h include/pros/imu.hpp \
+ include/pros/imu.h include/pros/llemu.hpp include/pros/llemu.h \
+ include/pros/misc.hpp include/pros/misc.h include/pros/motors.hpp \
+ include/pros/motors.h include/pros/optical.hpp include/pros/optical.h \
  include/pros/rotation.hpp include/pros/rotation.h include/pros/rtos.hpp \
- include/pros/rtos.h include/pros/vision.hpp include/pros/vision.h \
- include/dev.h include/json.hpp
+ include/pros/rtos.h include/pros/screen.hpp include/pros/screen.h \
+ include/pros/vision.hpp include/pros/vision.h include/dev.h \
+ include/json.hpp
 include/filemanagment.h:
 include/api.h:
 include/pros/adi.h:
@@ -81,6 +83,7 @@ include/pros/distance.h:
 include/pros/ext_adi.h:
 include/pros/adi.h:
 include/pros/adi.h:
+include/pros/gps.h:
 include/pros/imu.h:
 include/pros/llemu.h:
 include/display/lvgl.h:
@@ -194,10 +197,14 @@ include/pros/optical.h:
 include/api.h:
 include/pros/rtos.h:
 include/pros/rotation.h:
+include/pros/screen.h:
+include/pros/colors.h:
 include/pros/vision.h:
 include/pros/adi.hpp:
 include/pros/distance.hpp:
 include/pros/distance.h:
+include/pros/gps.hpp:
+include/pros/gps.h:
 include/pros/imu.hpp:
 include/pros/imu.h:
 include/pros/llemu.hpp:
@@ -212,6 +219,8 @@ include/pros/rotation.hpp:
 include/pros/rotation.h:
 include/pros/rtos.hpp:
 include/pros/rtos.h:
+include/pros/screen.hpp:
+include/pros/screen.h:
 include/pros/vision.hpp:
 include/pros/vision.h:
 include/dev.h:

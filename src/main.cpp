@@ -27,8 +27,8 @@ void autonomous() {}
 
 void opcontrol() {
 	while (true) {
-        if (master.get_digital(E_CONTROLLER_DIGITAL_UP)) { set_drive_mode(get_drive_mode() + 1); delay(75); }
-        if (master.get_digital(E_CONTROLLER_DIGITAL_DOWN)) { set_drive_mode(get_drive_mode() - 1); delay(75); }
+        if (master.get_digital(E_CONTROLLER_DIGITAL_UP)) { set_drive_mode(get_drive_mode() + 1); pros::delay(75); }
+        if (master.get_digital(E_CONTROLLER_DIGITAL_DOWN)) { set_drive_mode(get_drive_mode() - 1); pros::delay(75); }
         
         if(master.get_digital(E_CONTROLLER_DIGITAL_A)) { set_logging(true); }
         if(master.get_digital(E_CONTROLLER_DIGITAL_B)) { set_logging(false); }
@@ -37,15 +37,15 @@ void opcontrol() {
 
         drive(); //link this to chasis-drive.cpp
         
-        if (master.get_digital(E_CONTROLLER_DIGITAL_L2)){
+        /*if (master.get_digital(E_CONTROLLER_DIGITAL_L2)){
             stick.move(45);
         } else if (master.get_digital(E_CONTROLLER_DIGITAL_L1)){
             stick.move(-45);
         } else {
             stick.move(0);
-        }
+        }*/
         
-        delay(20);
+        pros::delay(20);
 	}
 }
 

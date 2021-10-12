@@ -69,6 +69,7 @@ void set_drive_mode(int in_mode){
     drive_mode = in_mode;
 }
 
+//main drive method
 void drive(){
     //cap drive_mode at min 1 and max 3
     if (drive_mode == 1){

@@ -16,8 +16,8 @@ void drive_one(){
     float f_rf = (axis_3 + (-axis_4) - axis_1)/(3*127)*power_multiplier;
     float f_rb = (axis_3 + (axis_4) - axis_1)/(3*127)*power_multiplier;
 
-    lf_mtr.move(f_lf);
-    lb_mtr.move(f_lb);
+    lf_mtr.move(-f_lf); //reversed left side of drive
+    lb_mtr.move(-f_lb);
     rf_mtr.move(f_rf);
     rb_mtr.move(f_rb);
 }

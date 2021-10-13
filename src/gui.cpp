@@ -56,8 +56,11 @@ void gui_manager(void * param){
 
     lv_obj_align(debug_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     lv_obj_align(drive_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+
+    char * file_toload_buf;
     while(true){
-        lv_ddlist_get_selected_str(files_selector, file_toload);
+        lv_ddlist_get_selected_str(files_selector, file_toload_buf);
+        set_file_toload(file_toload_buf);
 
         //update labels here
         lv_label_set_text(drive_label, ("Drive Type: " + std::to_string(get_drive_mode())).c_str());

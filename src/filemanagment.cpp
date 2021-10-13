@@ -1,5 +1,9 @@
 #include "filemanagment.h"
 
+void set_file_toload(char * strin){
+    file_toload.assign(strin);
+}
+
 void set_logging(bool in){
     logging = in;
 }
@@ -65,9 +69,9 @@ void sd_logging(void *param) { //what this does is write multiple lines into a f
 
 void sd_load(){
     if (!pros::usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.
-
+    if (file_toload == "") return;
     //reading from file
-    FILE* usd_file_read = fopen(file_toload, "r");
+    FILE* usd_file_read = fopen(file_toload.c_str(), "r");
     char buf[50]; // This just needs to be larger than the contents of the file
     fread(buf, 1, 50, usd_file_read); // passing 1 because a `char` is 1 byte, and 50 b/c it's the length of buf
     printf("%s\n", buf); // print the string read from the file

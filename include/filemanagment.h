@@ -10,7 +10,8 @@ using json = nlohmann::json;
 #include <filesystem>
 namespace fs = std::filesystem;
 
-static char *file_toload;
+static std::string file_toload = "";
+void set_file_toload(char* strin);
 static json input_ins;
 
 static bool logging = true;

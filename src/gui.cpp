@@ -92,6 +92,6 @@ void gui_manager(void * param){
                 lv_label_set_text(autonbutton1_label, "Red, Right");
                 break;
         }
-        delay(250); //update every half a second
+        delay(500); //update every half a second
     }
 }

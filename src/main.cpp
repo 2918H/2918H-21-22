@@ -17,8 +17,8 @@
 void initialize() {
     //Start Async tasks for gui, and logging/replay systems
     //Task gui(gui_manager);
-	//Task sd_log(sd_logging);
-    //Task replay(sd_replay);
+	Task sd_log(sd_logging);
+    Task replay(sd_replay);
 }
 
 void disabled() {}

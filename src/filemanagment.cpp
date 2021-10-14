@@ -97,7 +97,7 @@ void sd_replay(void *param){
 
 std::string get_files_from_dir(){
     //listing contents of dir
-    std::string out;
+    std::string out = "test\n/usd/ files should be written below:\n";
     std::string path = "/usd/";
     for (const auto & entry : fs::directory_iterator(path))
         out = out + (std::string(entry.path()).c_str()) + '\n';

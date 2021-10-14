@@ -56,6 +56,7 @@ void gui_manager(void * param){
 
     lv_obj_align(debug_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     lv_obj_align(drive_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+    lv_obj_align(files_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     lv_obj_align(files_selector, NULL, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
 
     char * file_toload_buf;

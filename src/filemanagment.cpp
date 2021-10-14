@@ -101,8 +101,8 @@ std::string get_files_from_dir(){
     std::string out = "test\n/usd/ files should be written below:\n";
     std::string path = "/usd/";
     for (const auto & entry : fs::recursive_directory_iterator(path)) {
-        out = out + (std::string(entry.path()).c_str()) + '\n';
-        printf(std::string(entry.path()).c_str());
+        out = out + (entry.path().u8string()) + '\n';
+        printf(entry.path().u8string().c_str());
 
     }
     return out;

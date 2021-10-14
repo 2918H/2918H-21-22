@@ -12,9 +12,11 @@
  * - [Must] all be in design notebook
 */
 
+// to debug segfault errors, use: arm-none-eabi-addr2line -faps -e ./bin/monolith.elf <pc hex code>
+
 void initialize() {
     //Start Async tasks for gui, and logging/replay systems
-    Task gui(gui_manager);
+    //Task gui(gui_manager);
 	//Task sd_log(sd_logging);
     //Task replay(sd_replay);
 }

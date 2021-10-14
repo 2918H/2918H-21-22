@@ -96,11 +96,14 @@ void sd_replay(void *param){
 }
 
 std::string get_files_from_dir(){
-    if (!pros::usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.
+    if (!pros::usd::is_installed()) return "Err: No SD Card"; //if there is no SD card, don't try to read/write from/to it.
     //listing contents of dir
     std::string out = "test\n/usd/ files should be written below:\n";
     std::string path = "/usd/";
-    for (const auto & entry : fs::directory_iterator(path))
+    for (const auto & entry : fs::recursive_directory_iterator(path)) {
         out = out + (std::string(entry.path()).c_str()) + '\n';
+        printf(std::string(entry.path()).c_str());
+
+    }
     return out;
 }

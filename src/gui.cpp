@@ -52,7 +52,7 @@ void gui_manager(void * param){
     lv_label_set_text(autonbutton1_label, "Auton");
     lv_btn_set_action(autonbutton1, LV_BTN_ACTION_CLICK, btn_event_handler);
     lv_label_set_text(files_label, get_files_from_dir().c_str());
-    //lv_ddlist_set_options(files_selector, get_files_from_dir().c_str());
+    lv_ddlist_set_options(files_selector, get_files_from_dir().c_str());
 
     lv_obj_align(debug_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     lv_obj_align(drive_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);

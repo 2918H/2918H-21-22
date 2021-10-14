@@ -96,6 +96,7 @@ void sd_replay(void *param){
 }
 
 std::string get_files_from_dir(){
+    if (!pros::usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.
     //listing contents of dir
     std::string out = "test\n/usd/ files should be written below:\n";
     std::string path = "/usd/";

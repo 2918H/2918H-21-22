@@ -98,8 +98,8 @@ void sd_replay(void *param){
 std::string get_files_from_dir(){
     //listing contents of dir
     std::string out;
-    std::string path = "/usr/";
+    std::string path = "/usd/";
     for (const auto & entry : fs::directory_iterator(path))
-        out += (std::string(entry.path()).c_str()) + '\n';
+        out = out + (std::string(entry.path()).c_str()) + '\n';
     return out;
 }

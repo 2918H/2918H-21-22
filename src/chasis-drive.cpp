@@ -11,10 +11,10 @@ void drive_one(){
 
     //left joystick controls straightwards and strafing
     //right joystick controls turning
-    float f_lf = (axis_3 + (/*-*/-axis_4) + axis_1)/(3*127)*power_multiplier; //reversed left side of drive for strafing _only_
-    float f_lb = (-axis_3 + (/*-*/axis_4) + -axis_1)/(3*127)*power_multiplier; //reversed forward/backward for back motors
+    float f_lf = (axis_3 + (--axis_4) + axis_1)/(3*127)*power_multiplier; //reversed left side of drive for strafing _only_
+    float f_lb = (-axis_3 + (-axis_4) + axis_1)/(3*127)*power_multiplier; //reversed forward/backward for back motors
     float f_rf = (axis_3 + (-axis_4) - axis_1)/(3*127)*power_multiplier;
-    float f_rb = (-axis_3 + (axis_4) - -axis_1)/(3*127)*power_multiplier;
+    float f_rb = (-axis_3 + (axis_4) - axis_1)/(3*127)*power_multiplier;
 
     lf_mtr.move(f_lf);
     lb_mtr.move(f_lb);

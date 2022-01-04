@@ -52,7 +52,15 @@ void gui_manager(void * param){
     lv_label_set_text(autonbutton1_label, "Auton");
     lv_btn_set_action(autonbutton1, LV_BTN_ACTION_CLICK, btn_event_handler);
     lv_label_set_text(files_label, get_files_from_dir().c_str());
-    lv_ddlist_set_options(files_selector, get_files_from_dir().c_str());
+
+    std::string filepaths = log_paths.dump(1);
+    filepaths.erase(remove(filepaths.begin(), filepaths.end(), '{'), filepaths.end());
+    filepaths.erase(remove(filepaths.begin(), filepaths.end(), '}'), filepaths.end());
+    filepaths.erase(remove(filepaths.begin(), filepaths.end(), ','), filepaths.end());
+    filepaths.erase(remove(filepaths.begin(), filepaths.end(), '"'), filepaths.end());
+    filepaths.erase(remove(filepaths.begin(), filepaths.end(), '\''), filepaths.end());
+    filepaths.erase(remove(filepaths.begin(), filepaths.end(), ' '), filepaths.end());
+    lv_ddlist_set_options(files_selector, filepaths.c_str());
 
     lv_obj_align(debug_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
     lv_obj_align(drive_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
@@ -61,8 +69,8 @@ void gui_manager(void * param){
 
     char * file_toload_buf;
     while(true){
-        //lv_ddlist_get_selected_str(files_selector, file_toload_buf);
-        //set_file_toload(file_toload_buf);
+        lv_ddlist_get_selected_str(files_selector, file_toload_buf);
+        set_file_toload(file_toload_buf);
 
         //update labels here
         lv_label_set_text(drive_label, ("Drive Type: " + std::to_string(get_drive_mode())).c_str());

@@ -14,7 +14,8 @@ void set_replaying(bool in){
 
 void sd_logging(void *param) { //what this does is write multiple lines into a file (test.log)
 	if (!pros::usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.
-    FILE* usd_file_write = fopen("/usd/match.log", "w");
+	std::string filename = "/usd/match.log" + pros::millis(); //using millis to generate a random-ish number to not overwrite other logs
+    FILE* usd_file_write = fopen(filename.c_str(), "w");
     int logint = 0;
 	while(logging){
         //output the log to a file
@@ -74,8 +75,6 @@ void sd_load(){
     FILE* usd_file_read = fopen(file_toload.c_str(), "r");
     char buf[50]; // This just needs to be larger than the contents of the file
     fread(buf, 1, 50, usd_file_read); // passing 1 because a `char` is 1 byte, and 50 b/c it's the length of buf
-    printf("%s\n", buf); // print the string read from the file
-    // Should print "Example text" to the terminal
     fclose(usd_file_read); // always close files when you're done with them
 
     input_ins = json::parse(buf);
@@ -106,4 +105,28 @@ std::string get_files_from_dir(){
 
     }
     return out;
+}
+
+const std::string log_registrar_path = "/usd/log-path.json";
+
+void load_logs(){
+    if (!pros::usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.
+    FILE* log_registrar = fopen(log_registrar_path.c_str(), "r");
+    //int buffer_size = 50;
+    char buf[50];
+    fread(buf, 1, 50, log_registrar);
+    fclose(log_registrar);
+    if (strlen(buf) == 0) {
+        FILE* log_reg = fopen(log_registrar_path.c_str(), "w");
+        json output = {
+            {
+                "/usd/match.log"
+            }
+        };
+        std::string output_txt = output.dump(4);
+		fputs(output_txt.c_str(), log_reg);
+        fclose(log_reg);
+        return;
+    }
+    log_paths = json::parse(buf);
 }

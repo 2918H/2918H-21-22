@@ -6,6 +6,7 @@
  * /DONE/ - [Debugging] graphic display using custom manager
  * /DONE/ - [Nice to have] RTOS async functionality
  * /DONE/ - [Nice to have] save/replay system
+ * /DONE/ - instead of searching for logs on sd, store the locations in a json file that is always present and loaded
  * - [Nice to have] comment all code (incl. logic behind driving math)
  * /DONE/- split into multiple seperate h/cpp files    ^^^ comment as you go
  * 

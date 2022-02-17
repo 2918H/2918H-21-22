@@ -1,27 +1,32 @@
 #include "filemanagment.h"
 
-void set_file_toload(char * strin){
-    file_toload.assign(strin);
+void set_file_toload(char* strin, uint16_t strin_size){
+    file_toload.assign(strin, strin_size);
 }
 
 void set_logging(bool in){
     logging = in;
 }
 
+void flip_logging(){
+    logging = !logging;
+}
+
 void set_replaying(bool in){
     replaying = in;
 }
 
+void flip_replaying(){
+    replaying = !replaying;
+}
+
 void sd_logging(void *param) { //what this does is write multiple lines into a file (test.log)
 	if (!pros::usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.
+	if (!logging) return;
 	std::string filename = "/usd/match.log" + pros::millis(); //using millis to generate a random-ish number to not overwrite other logs
     FILE* usd_file_write = fopen(filename.c_str(), "w");
     int logint = 0;
 	while(logging){
-        //output the log to a file
-        /*std::string log_text = "{[TIME]" + std::to_string(millis()) + "}<\n" + \
-                                "{[LBVOL]" + std::to_string(lb_mtr.get_voltage()) + "}\n" + \
-                                ">\n\n";*/
         json output = {
             {logint, {
                 {"time", pros::millis()},
@@ -59,7 +64,20 @@ void sd_logging(void *param) { //what this does is write multiple lines into a f
                 }}
             }}
         };
-        //std::string log_text = std::to_string(logint) + ": {\n\t\"time\": " + std::to_string(millis()) + ", \n\t\"lf\": {\n\t\t\"vol\": " + std::to_string(lf_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(lf_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(lf_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(lf_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(lf_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(lf_mtr.is_stopped()) + "\n\t},\n\t\"lb\": {\n\t\t\"vol\": " + std::to_string(lb_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(lb_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(lb_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(lb_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(lb_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(lb_mtr.is_stopped()) + "\n\t},\n\t\"rf\": {\n\t\t\"vol\": " + std::to_string(rf_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(rf_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(rf_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(rf_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(rf_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(rf_mtr.is_stopped()) + "\n\t},\n\t\"rb\": {\n\t\t\"vol\": " + std::to_string(rb_mtr.get_voltage()) + ",\n\t\t\"vel\": " + std::to_string(rb_mtr.get_actual_velocity()) + ",\n\t\t\"pos\": " + std::to_string(rb_mtr.get_position()) + ",\n\t\t\"tor\": " + std::to_string(rb_mtr.get_torque()) + ",\n\t\t\"dir\": " + std::to_string(rb_mtr.get_direction()) + ",\n\t\t\"stopped\": " + std::to_string(rb_mtr.is_stopped()) + "\n\t},\n},\n";
+        /*std::string log_text = output.dump(4);
+        const char* o = log_text.c_str(); //this is too big (maybe) to shove into the file in one go
+		//fputs(o, usd_file_write);
+        const int chunksize = 64;
+        //for (int i = 0; i < (strlen(o) / chunksize); i++){
+
+            char o2[chunksize];
+            // copy memory from [o2 + i * chunksize] address into [o] with [chunksize] as size;
+            //memcpy(o2 + (i * chunksize), o, chunksize);
+            //fputs(o2, usd_file_write);
+        //}
+            printf(o);
+        logint++;
+		pros::delay(100);*/
         std::string log_text = output.dump(4);
 		fputs(log_text.c_str(), usd_file_write);
         logint++;
@@ -94,7 +112,7 @@ void sd_replay(void *param){
     }
 }
 
-std::string get_files_from_dir(){
+/*std::string get_files_from_dir(){
     if (!pros::usd::is_installed()) return "Err: No SD Card"; //if there is no SD card, don't try to read/write from/to it.
     //listing contents of dir
     std::string out = "test\n/usd/ files should be written below:\n";
@@ -105,9 +123,21 @@ std::string get_files_from_dir(){
 
     }
     return out;
-}
+}*/
 
-const std::string log_registrar_path = "/usd/log-path.json";
+std::string get_files_from_dir(){
+    std::string out = "test\n/usd/ files should be written below:\n";
+
+    /*if(log_paths.is_null()){
+        std::string format = log_paths.dump(0);
+        format.erase(remove(format.begin(), format.end(), '{'), format.end());
+        format.erase(remove(format.begin(), format.end(), '}'), format.end());
+        format.erase(remove(format.begin(), format.end(), '['), format.end());
+        format.erase(remove(format.begin(), format.end(), ']'), format.end());
+        format.erase(remove(format.begin(), format.end(), ','), format.end());
+    }*/
+    return out;
+}
 
 void load_logs(){
     if (!pros::usd::is_installed()) return; //if there is no SD card, don't try to read/write from/to it.

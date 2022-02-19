@@ -69,6 +69,10 @@ void set_drive_mode(int in_mode){
     drive_mode = in_mode;
 }
 
+void togglet_drive_mode(){
+    drive_mode++;
+}
+
 //main drive method
 void drive(){
     //cap drive_mode at min 1 and max 3

@@ -10,6 +10,7 @@ static pros::Motor rb_mtr(2, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCO
 static pros::Motor goalx_mtr(11, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_ROTATIONS);
 static pros::Motor goaly_mtr(12, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_ROTATIONS);
 
+static pros::Motor topl_mtr(18, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_ROTATIONS);
 static pros::Motor lift_mtr(20, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_ROTATIONS);
 
 static pros::Motor collector_mtr(19, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_ROTATIONS);

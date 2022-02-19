@@ -42,10 +42,11 @@ void gui_manager(void * param){
 									Left Joystick -> straightwards and turning\n\
 									Right Joystick -> strafing\n\n \
 									 --- Others --- \n \
-									Up -> Shift up a drive mode \n \
-									Down -> Shift down a drive mode \n \
-									A -> Activates Logging\n \
-									B -> Deactivates Logging\n \
+									A -> Toggles Logging\n \
+									B -> Toggles Replaying\n \
+									X -> Toggles Drive Mode\n \
+									UP -> Toggles Can Opener <Goal Spin>\n \
+									DOWN -> Toggles Goal Lift\n \
 									");
     //lv_obj_set_event_cb(autonbutton1, auton_event_handler);
     autonbutton1_label = lv_label_create(autonbutton1, NULL);

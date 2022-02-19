@@ -79,7 +79,7 @@ void sd_logging(void *param) { //what this does is write multiple lines into a f
         logint++;
 		pros::delay(100);*/
         std::string log_text = output.dump(4);
-		fputs(log_text.c_str(), usd_file_write);
+		//fputs(log_text.c_str(), usd_file_write);
         logint++;
 		pros::delay(100);
 	}

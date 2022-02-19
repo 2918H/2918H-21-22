@@ -7,6 +7,7 @@ using namespace pros;
 
 int get_drive_mode();
 void set_drive_mode(int in_mode);
+void togglet_drive_mode();
 void drive();
 void drive_one();
 void drive_two();

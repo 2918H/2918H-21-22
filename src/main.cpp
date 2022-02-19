@@ -26,20 +26,23 @@ void disabled() {}
 
 void competition_initialize() {}
 
-void autonomous() {}
+void autonomous() {
+    lb_pnm.set_value(true);
+    pros::delay(500);
+    lb_pnm.set_value(false);
+}
 
 void opcontrol() {
 	while (true) {
-        if (master.get_digital(E_CONTROLLER_DIGITAL_UP)) { set_drive_mode(get_drive_mode() + 1); pros::delay(75); }
-        if (master.get_digital(E_CONTROLLER_DIGITAL_DOWN)) { set_drive_mode(get_drive_mode() - 1); pros::delay(75); }
-        
-        //if(master.get_digital(E_CONTROLLER_DIGITAL_A)) { set_logging(true); }
-        //if(master.get_digital(E_CONTROLLER_DIGITAL_B)) { set_logging(false); }
-        //if(master.get_digital(E_CONTROLLER_DIGITAL_X)) { set_replaying(true); }
-        //if(master.get_digital(E_CONTROLLER_DIGITAL_Y)) { set_replaying(false); }
+        static bool toggleX { false };    //This static variable will keep state between loops or function calls
+        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
+            togglet_drive_mode();
+            toggleX = !toggleX;    //Flip the toggle to match piston state
+        }
 
         drive(); //link this to chasis-drive.cpp
         
+
         static bool toggleA { false };    //This static variable will keep state between loops or function calls
         if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
             flip_logging();
@@ -50,40 +53,48 @@ void opcontrol() {
             flip_replaying();
             toggleB = !toggleB;    //Flip the toggle to match piston state
         }
-        /*static bool toggleX { false };    //This static variable will keep state between loops or function calls
-        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
-            piston.set_value(!toggleX);    //When false go to true and in reverse
-            toggleX = !toggleX;    //Flip the toggle to match piston state
-        }*/
         static bool toggleY { false };    //This static variable will keep state between loops or function calls
         if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
-            lf_pnm.set_value(!toggleY);
-            lb_pnm.set_value(!toggleY);
-            rf_pnm.set_value(!toggleY);
-            rb_pnm.set_value(!toggleY);
+            liftlow_pnm.set_value(!toggleY);
+            //lb_pnm.set_value(!toggleY);
+            //rf_pnm.set_value(!toggleY);
+            //rb_pnm.set_value(!toggleY);
             toggleY = !toggleY;    //Flip the toggle to match piston state
         }
 
         static bool toggleUP { false };    //This static variable will keep state between loops or function calls
         if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
-            liftlow_pnm.set_value(!toggleUP);
-            liftupp_pnm.set_value(!toggleUP);
+            lb_pnm.set_value(!toggleUP);
+            //liftlow_pnm.set_value(!toggleUP);
+            //liftupp_pnm.set_value(!toggleUP);
             toggleUP = !toggleUP;   //Flip the toggle to match piston state
         }
-        static bool toggleR { false };    //This static variable will keep state between loops or function calls
-        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
-            liftl_pnm.set_value(!toggleR);
-            liftr_pnm.set_value(!toggleR);
-            toggleR = !toggleR;    //Flip the toggle to match piston state
+        static bool toggleD { false };    //This static variable will keep state between loops or function calls
+        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
+            lf_pnm.set_value(!toggleD);
+            //liftl_pnm.set_value(!toggleR);
+            //liftr_pnm.set_value(!toggleR);
+            toggleD = !toggleD;    //Flip the toggle to match piston state
         }
 
-        /*if (master.get_digital(E_CONTROLLER_DIGITAL_L2)){
-            stick.move(45);
+        if (master.get_digital(E_CONTROLLER_DIGITAL_L2)){
+            collector_mtr.move(45);
+            lift_mtr.move(75);
         } else if (master.get_digital(E_CONTROLLER_DIGITAL_L1)){
-            stick.move(-45);
+            collector_mtr.move(-45);
+            lift_mtr.move(-75);
         } else {
-            stick.move(0);
-        }*/
+            collector_mtr.move(0);
+            lift_mtr.move(0);
+        }
+
+        if (master.get_digital(E_CONTROLLER_DIGITAL_R1)){
+            topl_mtr.move(75);
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)){
+            topl_mtr.move(-75);
+        } else {
+            topl_mtr.move(0);
+        }
         
         pros::delay(50);
 	}
